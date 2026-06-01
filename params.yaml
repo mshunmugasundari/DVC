@@ -1,0 +1,9 @@
+generate:
+  n_samples: 500
+  noise: 0.3
+  random_state: 42
+
+train:
+  test_size: 0.2
+  random_state: 42
+  alpha: 0.01

@@ -1,0 +1,13 @@
+# Git ignore rules for DVC project
+
+# DVC cache (local, not committed)
+/data/raw/dataset.csv
+/data/processed/
+/models/
+/metrics/residuals_plot.png
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env

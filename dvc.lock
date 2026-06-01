@@ -1,0 +1,87 @@
+schema: '2.0'
+stages:
+  generate:
+    cmd: python src/generate_data.py
+    deps:
+    - path: src/generate_data.py
+      hash: md5
+      md5: b9e668de03a97386969b2d165f5d9674
+      size: 1050
+    params:
+      params.yaml:
+        generate.n_samples: 500
+        generate.noise: 0.3
+        generate.random_state: 42
+    outs:
+    - path: data/raw/dataset.csv
+      hash: md5
+      md5: 22020fc956ba510784872841ad000622
+      size: 59085
+  preprocess:
+    cmd: python src/preprocess.py
+    deps:
+    - path: data/raw/dataset.csv
+      hash: md5
+      md5: 22020fc956ba510784872841ad000622
+      size: 59085
+    - path: src/preprocess.py
+      hash: md5
+      md5: 83980d8b30affcad353468de7f498309
+      size: 1694
+    params:
+      params.yaml:
+        train.random_state: 42
+        train.test_size: 0.2
+    outs:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 3ea91fd7ec9b9617027cdf4ffb8fa89b
+      size: 11867
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 0c301625f1ecf5b7fbf153f9215a5138
+      size: 47189
+  train:
+    cmd: python src/train.py
+    deps:
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 0c301625f1ecf5b7fbf153f9215a5138
+      size: 47189
+    - path: src/train.py
+      hash: md5
+      md5: a8df3b45e74ee627c88fb4978998093f
+      size: 1200
+    params:
+      params.yaml:
+        train.alpha: 0.01
+        train.random_state: 42
+    outs:
+    - path: models/model.pkl
+      hash: md5
+      md5: 3a8f304cfdb5ba02afa7ab73f621d286
+      size: 626
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 3ea91fd7ec9b9617027cdf4ffb8fa89b
+      size: 11867
+    - path: models/model.pkl
+      hash: md5
+      md5: 3a8f304cfdb5ba02afa7ab73f621d286
+      size: 626
+    - path: src/evaluate.py
+      hash: md5
+      md5: 7c7ede6da589407aadfa6ad7d4f60948
+      size: 2319
+    outs:
+    - path: metrics/metrics.json
+      hash: md5
+      md5: 26c444cbc082ae0645f40ec4625868f7
+      size: 57
+    - path: metrics/residuals_plot.png
+      hash: md5
+      md5: 6eadee80df7603a84a997824f887d8ca
+      size: 43575
